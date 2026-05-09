@@ -3,7 +3,7 @@ import {
   LetterState,
   HoverState,
   HoverTypedSweepOptions,
-} from "../../types";
+} from "@types";
 
 export const cursorSweep: CursorSweepFn = async (
   text: LetterState[],

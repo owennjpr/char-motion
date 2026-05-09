@@ -1,4 +1,4 @@
-import { LetterState, HoverState, CaseFn, HoverCaseOptions } from "../../types";
+import { LetterState, HoverState, CaseFn, HoverCaseOptions } from "@types";
 
 export const caseChange: CaseFn = async (
   text: LetterState[],

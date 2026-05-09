@@ -1,4 +1,4 @@
-import { EnterTypedSweepOptions, LetterState, TypedSweepFn } from "../../types";
+import { EnterTypedSweepOptions, LetterState, TypedSweepFn } from "@types";
 
 export const typedSweep: TypedSweepFn = async (
   text: LetterState[],

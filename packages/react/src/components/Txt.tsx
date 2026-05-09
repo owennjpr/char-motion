@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Enter, Hover, Morph, LetterState, HoverState } from "../types";
+import { Enter, Hover, Morph, LetterState, HoverState } from "@types";
 import { enterEffects } from "../enterMap";
 import { hoverEffects } from "../hoverMap";
 import { morphEffects } from "../morphMap";

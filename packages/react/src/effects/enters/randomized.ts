@@ -1,4 +1,4 @@
-import { EnterRandomizedOptions, LetterState, RandomizedFn } from "../../types";
+import { EnterRandomizedOptions, LetterState, RandomizedFn } from "@types";
 
 export const randomized: RandomizedFn = async (
   text: LetterState[],

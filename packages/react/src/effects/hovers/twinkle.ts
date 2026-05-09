@@ -3,7 +3,7 @@ import {
   TwinkleFn,
   HoverState,
   HoverTwinkleOptions,
-} from "../../types";
+} from "@types";
 
 export const twinkle: TwinkleFn = async (
   text: LetterState[],

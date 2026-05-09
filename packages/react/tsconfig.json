@@ -8,7 +8,12 @@
     "strict": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@types": ["src/types.ts"]
+    }
+
   },
   "include": ["src"]
 }

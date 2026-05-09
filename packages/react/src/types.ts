@@ -20,7 +20,10 @@ export type EnterNumberSweepOptions = {
   direction?: "rtl" | "ltr";
 };
 
-export type EnterCocktailShakerOptions = {
+export type EnterSortAlgorithm = "cocktail shaker" | "quick sort";
+
+export type EnterSortOptions = {
+  algorithm?: EnterSortAlgorithm;
   rate?: number;
   startDelay?: number;
   direction?: "rtl" | "ltr";
@@ -74,8 +77,8 @@ export type Enter =
       options?: EnterNumberSweepOptions;
     }
   | {
-      type: "cocktail shaker";
-      options?: EnterCocktailShakerOptions;
+      type: "sort";
+      options?: EnterSortOptions;
     };
 
 export type Hover =
@@ -128,7 +131,7 @@ export type EffectFn<T extends object> = (
 export type RandomizedFn = EffectFn<EnterRandomizedOptions>;
 export type TypedSweepFn = EffectFn<EnterTypedSweepOptions>;
 export type NumberSweepFn = EffectFn<EnterNumberSweepOptions>;
-export type CocktailShakerFn = EffectFn<EnterCocktailShakerOptions>;
+export type SortFn = EffectFn<EnterSortOptions>;
 
 // Hover Functions
 export type CursorSweepFn = EffectFn<HoverTypedSweepOptions>;

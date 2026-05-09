@@ -1,23 +1,23 @@
 import { numberSweep } from "./effects/enters/numberSweep";
-import { cocktailShaker } from "./effects/enters/cocktailShaker";
 import { randomized } from "./effects/enters/randomized";
+import { sort } from "./effects/enters/sort";
 import { typedSweep } from "./effects/enters/typedSweep";
 import {
-  CocktailShakerFn,
   NumberSweepFn,
   RandomizedFn,
+  SortFn,
   TypedSweepFn,
-} from "./types";
+} from "@types";
 
 type EnterEffectMap = {
   "typed sweep": TypedSweepFn;
   "number sweep": NumberSweepFn;
   randomized: RandomizedFn;
-  "cocktail shaker": CocktailShakerFn;
+  sort: SortFn;
 };
 export const enterEffects: EnterEffectMap = {
   "typed sweep": typedSweep,
   "number sweep": numberSweep,
   randomized: randomized,
-  "cocktail shaker": cocktailShaker,
+  sort,
 };
