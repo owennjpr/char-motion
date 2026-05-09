@@ -277,13 +277,13 @@ function Gallery() {
 
         <EffectCard
           kind="Enter"
-          name="Cocktail Shaker"
+          name="Sort"
           preview={
             <div className="flex flex-row justify-between gap-2 items-center">
               <Txt
                 key={refresh4}
                 enter={{
-                  type: "cocktail shaker",
+                  type: "sort",
                   options: { direction: "ltr", rate: 30, startDelay: 150 },
                 }}
                 className="text-left"
@@ -294,6 +294,12 @@ function Gallery() {
             </div>
           }
           options={[
+            {
+              name: "algorithm",
+              description: "sorting algorithm to use",
+              type: `"cocktail shaker" | "quick sort"`,
+              defaultValue: `"cocktail shaker"`,
+            },
             {
               name: "rate",
               description: "time in ms between each compare/swap step",

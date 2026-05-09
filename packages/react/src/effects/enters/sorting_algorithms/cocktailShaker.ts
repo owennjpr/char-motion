@@ -1,8 +1,6 @@
-import {
-  CocktailShakerFn,
-  EnterCocktailShakerOptions,
-  LetterState,
-} from "../../types";
+import { EnterSortOptions, LetterState } from "@types";
+
+type CocktailShakerSortOptions = Omit<EnterSortOptions, "algorithm">;
 
 type ShakerItem = {
   letter: LetterState;
@@ -18,10 +16,10 @@ function shuffle<T>(arr: T[]): T[] {
   return out;
 }
 
-export const cocktailShaker: CocktailShakerFn = async (
+export const cocktailShakerSort = async (
   text: LetterState[],
   setText: (t: LetterState[]) => void,
-  options?: EnterCocktailShakerOptions
+  options?: CocktailShakerSortOptions
 ) => {
   const { rate = 40, startDelay = 0, direction = "ltr" } = options || {};
 

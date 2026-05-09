@@ -3,7 +3,7 @@ import {
   HoverState,
   LetterState,
   WordShuffleFn,
-} from "../../types";
+} from "@types";
 
 export const wordShuffle: WordShuffleFn = async (
   text: LetterState[],

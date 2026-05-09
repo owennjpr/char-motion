@@ -3,7 +3,7 @@ import {
   LetterState,
   MorphRetypeOptions,
   RetypeFn,
-} from "../../types";
+} from "@types";
 
 const getCommonPrefixLen = (s1: string, s2: string) => {
   const minL = Math.min(s1.length, s2.length);

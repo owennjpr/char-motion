@@ -1,5 +1,5 @@
 import { retype } from "./effects/morphs/retype";
-import { RetypeFn } from "./types";
+import { RetypeFn } from "@types";
 
 type MorphEffectMap = {
   retype: RetypeFn;

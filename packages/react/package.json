@@ -1,6 +1,6 @@
 {
   "name": "@char-motion/react",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": {
     "name": "Owen Prendergast",
     "email": "owenprendergast8@gmail.com"
@@ -11,9 +11,13 @@
     "animation",
     "text",
     "ascii art",
-    "character-animation",
+    "character animation",
     "motion",
-    "text-animation"
+    "text animation",
+    "retro design",
+    "retro",
+    "command line",
+    "cli"
   ],
   "main": "dist/index.cjs",
   "module": "dist/index.js",

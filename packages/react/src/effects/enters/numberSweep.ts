@@ -2,7 +2,7 @@ import {
   EnterNumberSweepOptions,
   LetterState,
   NumberSweepFn,
-} from "../../types";
+} from "@types";
 
 export const numberSweep: NumberSweepFn = async (
   text: LetterState[],
