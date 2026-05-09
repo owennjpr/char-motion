@@ -20,6 +20,12 @@ export type EnterNumberSweepOptions = {
   direction?: "rtl" | "ltr";
 };
 
+export type EnterCocktailShakerOptions = {
+  rate?: number;
+  startDelay?: number;
+  direction?: "rtl" | "ltr";
+};
+
 // Hover Option Types
 export type HoverTypedSweepOptions = {
   rate?: number;
@@ -66,6 +72,10 @@ export type Enter =
   | {
       type: "number sweep";
       options?: EnterNumberSweepOptions;
+    }
+  | {
+      type: "cocktail shaker";
+      options?: EnterCocktailShakerOptions;
     };
 
 export type Hover =
@@ -111,13 +121,14 @@ export type EffectFn<T extends object> = (
   setText: (l: LetterState[]) => void,
   options?: T,
   hover?: () => HoverState,
-  prevText?: LetterState[]
+  prevText?: LetterState[],
 ) => Promise<void>;
 
 // Enter Functions
 export type RandomizedFn = EffectFn<EnterRandomizedOptions>;
 export type TypedSweepFn = EffectFn<EnterTypedSweepOptions>;
 export type NumberSweepFn = EffectFn<EnterNumberSweepOptions>;
+export type CocktailShakerFn = EffectFn<EnterCocktailShakerOptions>;
 
 // Hover Functions
 export type CursorSweepFn = EffectFn<HoverTypedSweepOptions>;
