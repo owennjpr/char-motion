@@ -10,7 +10,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-cutive: var(--font-cutive-mono);
+  --font-cutive: var(--font-source-code-pro);
 }
 
 /* @media (prefers-color-scheme: dark) {

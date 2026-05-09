@@ -37,6 +37,7 @@ Effects that trigger when the Txt object is first initialized
 - typed sweep: characters type in as if written in a terminal
 - randomized: characters appear in random order with an intermediate jumbled state
 - number sweep: numbers shuffle and stabilize one by one
+- cocktail shaker: characters start in randomized positions and resolve via cocktail shaker sorting
 
 ### Hovers
 
