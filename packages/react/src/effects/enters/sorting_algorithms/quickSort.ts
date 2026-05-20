@@ -1,4 +1,6 @@
 import { EnterSortOptions, LetterState } from "@types";
+import { createEnterStepWaiter, DEFAULT_ENTER_RATE, sleep } from "@timing";
+import { shuffle } from "../shuffle";
 
 type QuickSortOptions = Omit<EnterSortOptions, "algorithm">;
 
@@ -7,29 +9,26 @@ type SortItem = {
   value: number;
 };
 
-function shuffle<T>(arr: T[]): T[] {
-  const out = [...arr];
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [out[i], out[j]] = [out[j], out[i]];
-  }
-  return out;
-}
-
 export const quickSortSort = async (
   text: LetterState[],
   setText: (t: LetterState[]) => void,
-  options?: QuickSortOptions
+  options?: QuickSortOptions,
 ) => {
-  const { rate = 40, startDelay = 0, direction = "ltr" } = options || {};
+  const { startDelay = 0, direction = "ltr" } = options || {};
+  const n = text.length;
+  const scheduler = createEnterStepWaiter(
+    options,
+    n * Math.max(1, Math.ceil(Math.log2(Math.max(n, 2)))),
+    DEFAULT_ENTER_RATE,
+  );
 
-  await new Promise((r) => setTimeout(r, startDelay));
+  await sleep(startDelay);
 
   let items: SortItem[] = shuffle(
     text.map((letter, i) => ({
       letter: { ...letter, char: letter.target, style: { ...letter.style } },
       value: i,
-    }))
+    })),
   );
 
   setText(items.map((x) => x.letter));
@@ -43,7 +42,7 @@ export const quickSortSort = async (
     [next[i], next[j]] = [next[j], next[i]];
     items = next;
     setText(items.map((x) => x.letter));
-    await new Promise((r) => setTimeout(r, rate));
+    await scheduler.wait();
   }
 
   async function partition(low: number, high: number): Promise<number> {
@@ -72,7 +71,7 @@ export const quickSortSort = async (
   }
 
   const final = [...items].sort((a, b) =>
-    direction === "rtl" ? b.value - a.value : a.value - b.value
+    direction === "rtl" ? b.value - a.value : a.value - b.value,
   );
   setText(final.map((x) => x.letter));
 };

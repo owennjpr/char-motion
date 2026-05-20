@@ -24,7 +24,7 @@ function Documentation() {
         <Txt
           enter={{
             type: "randomized",
-            options: { maxDelay: 1000 },
+            options: { duration: 1000 },
           }}
           hover={{
             type: "twinkle",
@@ -114,7 +114,7 @@ function Documentation() {
               {`<Txt
   enter={{
     type: "randomized",
-    options: { maxDelay: 2000, characterPool: "^*~${"`"}" },
+    options: { duration: 2000, easing: "easeOut", characterPool: "^*~${"`"}" },
   }}
 >
   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -127,7 +127,11 @@ function Documentation() {
                 className="text-base"
                 enter={{
                   type: "randomized",
-                  options: { maxDelay: 2000, characterPool: "^*~`" },
+                  options: {
+                    duration: 2000,
+                    easing: "easeOut",
+                    characterPool: "^*~`",
+                  },
                 }}
               >
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

@@ -11,7 +11,8 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@types": ["src/types.ts"]
+      "@types": ["src/types.ts"],
+      "@timing": ["src/timing"]
     }
 
   },

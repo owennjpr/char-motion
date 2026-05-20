@@ -1,6 +1,6 @@
 {
   "name": "@char-motion/react",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "author": {
     "name": "Owen Prendergast",
     "email": "owenprendergast8@gmail.com"
@@ -33,7 +33,9 @@
   "description": "Char Motion React: an ASCII character animation library for react",
   "license": "MIT",
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --clean"
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "test": "tsc -p tsconfig.test.json && node --test .test-dist/timing/*.test.js",
+    "test:watch": "tsc -p tsconfig.test.json && node --test --watch .test-dist/timing/*.test.js"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
