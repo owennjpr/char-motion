@@ -9,7 +9,7 @@ export default function Home() {
         <Txt
           enter={{
             type: "randomized",
-            options: { maxDelay: 2000 },
+            options: { duration: 2000, easing: "easeOut" },
           }}
           hover={{
             type: "twinkle",
@@ -87,7 +87,7 @@ ${"`"}Mb.     ,'   MM    MM  8M   MM    MM           M  ${"`"}YM'   MM YA.   ,A9
                 />
               </svg>
             </a>
-            <Txt className="text-sm">v0.2.3</Txt>
+            <Txt className="text-sm">v0.3.0</Txt>
             <a
               href="https://www.npmjs.com/package/@char-motion/react"
               className="opacity-50"

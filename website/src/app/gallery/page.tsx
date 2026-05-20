@@ -12,6 +12,34 @@ type OptionItem = {
   defaultValue: string;
 };
 
+const enterDurationOption: OptionItem = {
+  name: "duration",
+  description: "total ms for the animated body (excludes startDelay)",
+  type: "number",
+  defaultValue: "(see effect)",
+};
+
+const enterEasingOption: OptionItem = {
+  name: "easing",
+  description: "progress curve when using duration; ignored with rate",
+  type: `"linear" | "easeIn" | "easeOut" | "easeInOut" | (t) => number`,
+  defaultValue: `"linear"`,
+};
+
+const enterStartDelayOption: OptionItem = {
+  name: "startDelay",
+  description: "time in ms to wait before starting",
+  type: "number",
+  defaultValue: "0",
+};
+
+const enterRateOption = (unit: "letter" | "tick" | "step"): OptionItem => ({
+  name: "rate",
+  description: `ms per ${unit} when duration is not set; ignored if duration is set`,
+  type: "number",
+  defaultValue: "40",
+});
+
 type EffectCardProps = {
   kind: "Enter" | "Hover" | "Morph";
   name: string;
@@ -128,7 +156,7 @@ function Gallery() {
       </div>
 
       <Txt
-        enter={{ type: "randomized", options: { maxDelay: 1000 } }}
+        enter={{ type: "randomized", options: { duration: 1000 } }}
         hover={{
           type: "twinkle",
           options: { rate: 50, maxNum: 5, characterPool: "*^" },
@@ -152,7 +180,10 @@ function Gallery() {
             <div className="flex flex-row justify-between gap-2 items-center">
               <Txt
                 key={refresh1}
-                enter={{ type: "typed sweep" }}
+                enter={{
+                  type: "typed sweep",
+                  options: { duration: 2400, easing: "easeOut" },
+                }}
                 className="text-left"
               >
                 {lorem}
@@ -161,24 +192,16 @@ function Gallery() {
             </div>
           }
           options={[
-            {
-              name: "rate",
-              description: "time in ms for each letter to type",
-              type: "number",
-              defaultValue: "40",
-            },
+            enterDurationOption,
+            enterEasingOption,
+            enterRateOption("letter"),
             {
               name: "cursor",
               description: "which character to use as a cursor",
               type: "string",
               defaultValue: "_",
             },
-            {
-              name: "startDelay",
-              description: "time in ms to wait before starting",
-              type: "number",
-              defaultValue: "0",
-            },
+            enterStartDelayOption,
             {
               name: "direction",
               description: "which side/direction the cursor starts/moves",
@@ -204,24 +227,15 @@ function Gallery() {
             </div>
           }
           options={[
-            {
-              name: "maxDelay",
-              description: "maximum time for the animation to resolve",
-              type: "number",
-              defaultValue: "1000",
-            },
+            { ...enterDurationOption, defaultValue: "1000" },
+            enterEasingOption,
             {
               name: "characterPool",
               description: "which characters to use for intermediate step",
               type: "string",
               defaultValue: "-._-",
             },
-            {
-              name: "startDelay",
-              description: "time in ms to wait before starting",
-              type: "number",
-              defaultValue: "0",
-            },
+            enterStartDelayOption,
           ]}
         />
 
@@ -241,12 +255,9 @@ function Gallery() {
             </div>
           }
           options={[
-            {
-              name: "rate",
-              description: "time in ms between each tick",
-              type: "number",
-              defaultValue: "40",
-            },
+            enterDurationOption,
+            enterEasingOption,
+            enterRateOption("tick"),
             {
               name: "cyclesPerDigit",
               description: "number of ticks for each character to be revealed",
@@ -259,12 +270,7 @@ function Gallery() {
               type: "string",
               defaultValue: "0123456789",
             },
-            {
-              name: "startDelay",
-              description: "time in ms to wait before starting",
-              type: "number",
-              defaultValue: "0",
-            },
+            enterStartDelayOption,
             {
               name: "direction",
               description:
@@ -300,18 +306,10 @@ function Gallery() {
               type: `"cocktail shaker" | "quick sort"`,
               defaultValue: `"cocktail shaker"`,
             },
-            {
-              name: "rate",
-              description: "time in ms between each compare/swap step",
-              type: "number",
-              defaultValue: "40",
-            },
-            {
-              name: "startDelay",
-              description: "time in ms to wait before starting",
-              type: "number",
-              defaultValue: "0",
-            },
+            enterDurationOption,
+            enterEasingOption,
+            enterRateOption("step"),
+            enterStartDelayOption,
             {
               name: "direction",
               description:

@@ -1,36 +1,31 @@
 import { EnterSortOptions, LetterState } from "@types";
+import { createEnterStepWaiter, DEFAULT_ENTER_RATE, sleep } from "@timing";
+import { shuffle } from "../shuffle";
 
 type CocktailShakerSortOptions = Omit<EnterSortOptions, "algorithm">;
 
 type ShakerItem = {
   letter: LetterState;
-  value: number; // original index in the final (correct) ordering
+  value: number;
 };
-
-function shuffle<T>(arr: T[]): T[] {
-  const out = [...arr];
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [out[i], out[j]] = [out[j], out[i]];
-  }
-  return out;
-}
 
 export const cocktailShakerSort = async (
   text: LetterState[],
   setText: (t: LetterState[]) => void,
-  options?: CocktailShakerSortOptions
+  options?: CocktailShakerSortOptions,
 ) => {
-  const { rate = 40, startDelay = 0, direction = "ltr" } = options || {};
+  const { startDelay = 0, direction = "ltr" } = options || {};
+  const n = text.length;
+  const scheduler = createEnterStepWaiter(options, n * n, DEFAULT_ENTER_RATE);
 
-  await new Promise((r) => setTimeout(r, startDelay));
+  await sleep(startDelay);
 
   // Randomize initial letter positions, but keep each letter's target character.
   let items: ShakerItem[] = shuffle(
     text.map((letter, i) => ({
       letter: { ...letter, char: letter.target, style: { ...letter.style } },
       value: i,
-    }))
+    })),
   );
 
   setText(items.map((x) => x.letter));
@@ -54,7 +49,7 @@ export const cocktailShakerSort = async (
       }
 
       setText(items.map((x) => x.letter));
-      await new Promise((r) => setTimeout(r, rate));
+      await scheduler.wait();
     }
 
     if (!swapped) break;
@@ -71,7 +66,7 @@ export const cocktailShakerSort = async (
       }
 
       setText(items.map((x) => x.letter));
-      await new Promise((r) => setTimeout(r, rate));
+      await scheduler.wait();
     }
 
     if (!swapped) break;
@@ -80,7 +75,7 @@ export const cocktailShakerSort = async (
 
   // Ensure final state is exactly the sorted (correct) order.
   const final = [...items].sort((a, b) =>
-    direction === "rtl" ? b.value - a.value : a.value - b.value
+    direction === "rtl" ? b.value - a.value : a.value - b.value,
   );
   setText(final.map((x) => x.letter));
 };

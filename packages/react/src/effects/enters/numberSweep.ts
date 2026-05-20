@@ -1,27 +1,25 @@
-import {
-  EnterNumberSweepOptions,
-  LetterState,
-  NumberSweepFn,
-} from "@types";
+import { EnterNumberSweepOptions, LetterState, NumberSweepFn } from "@types";
+import { resolveEnterStepTiming, sleep, stepDelay } from "@timing";
 
 export const numberSweep: NumberSweepFn = async (
   text: LetterState[],
   setText: (t: LetterState[]) => void,
-  options?: EnterNumberSweepOptions
+  options?: EnterNumberSweepOptions,
 ) => {
   const {
-    rate = 40,
     cyclesPerDigit = 5,
     characterPool = "0123456789",
     startDelay = 0,
     direction = "rtl",
   } = options || {};
 
-  await new Promise((r) => setTimeout(r, startDelay));
+  const stepCount = text.length * cyclesPerDigit;
+  const timing = resolveEnterStepTiming(stepCount, options);
 
-  let remainingCycles = text.length * cyclesPerDigit;
+  await sleep(startDelay);
 
-  while (remainingCycles > 0) {
+  for (let step = 0; step < stepCount; step++) {
+    const remainingCycles = stepCount - step;
     const index = Math.floor(remainingCycles / Math.max(cyclesPerDigit, 1));
 
     for (let i = 0; i < text.length; i++) {
@@ -39,7 +37,6 @@ export const numberSweep: NumberSweepFn = async (
     }
 
     setText([...text]);
-    remainingCycles--;
-    await new Promise((r) => setTimeout(r, rate));
+    await sleep(stepDelay(timing, step));
   }
 };

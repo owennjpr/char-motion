@@ -19,6 +19,7 @@ node_modules
 /build
 dist/
 packages/react/dist
+packages/react/.test-dist/timing/
 
 # misc
 .DS_Store
