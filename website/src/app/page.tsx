@@ -87,7 +87,7 @@ ${"`"}Mb.     ,'   MM    MM  8M   MM    MM           M  ${"`"}YM'   MM YA.   ,A9
                 />
               </svg>
             </a>
-            <Txt className="text-sm">v0.3.0</Txt>
+            <Txt className="text-sm">v0.3.1</Txt>
             <a
               href="https://www.npmjs.com/package/@char-motion/react"
               className="opacity-50"
