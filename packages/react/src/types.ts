@@ -1,31 +1,47 @@
-// Enter Option Types
-export type EnterRandomizedOptions = {
-  maxDelay?: number;
-  characterPool?: string;
+// Enter timing (shared)
+import type { Easing, EasingName } from "./timing/easings";
+
+export type { Easing, EasingName };
+
+export type EnterTimingOptions = {
+  /**
+   * Total ms for the animated body (excludes `startDelay`).
+   * When set on step-based enters, timing uses `duration` + optional `easing` and `rate` is ignored.
+   * On randomized, sets the wall-clock budget (with optional `easing`).
+   */
+  duration?: number;
+  /** Progress curve when using `duration`; ignored when timing via `rate`. Default: `"linear"`. */
+  easing?: Easing;
+  /** Ms to wait before the animated body; not included in `duration`. */
   startDelay?: number;
+  /** Ms per step when `duration` is not set (typed sweep, number sweep, sort). */
+  rate?: number;
+  /**
+   * @deprecated Use `duration`.
+   */
+  maxDelay?: number;
 };
 
-export type EnterTypedSweepOptions = {
-  rate?: number;
+// Enter Option Types
+export type EnterRandomizedOptions = EnterTimingOptions & {
+  characterPool?: string;
+};
+
+export type EnterTypedSweepOptions = EnterTimingOptions & {
   cursor?: string;
-  startDelay?: number;
   direction?: "rtl" | "ltr";
 };
 
-export type EnterNumberSweepOptions = {
-  rate?: number;
+export type EnterNumberSweepOptions = EnterTimingOptions & {
   cyclesPerDigit?: number;
   characterPool?: string;
-  startDelay?: number;
   direction?: "rtl" | "ltr";
 };
 
 export type EnterSortAlgorithm = "cocktail shaker" | "quick sort";
 
-export type EnterSortOptions = {
+export type EnterSortOptions = EnterTimingOptions & {
   algorithm?: EnterSortAlgorithm;
-  rate?: number;
-  startDelay?: number;
   direction?: "rtl" | "ltr";
 };
 
