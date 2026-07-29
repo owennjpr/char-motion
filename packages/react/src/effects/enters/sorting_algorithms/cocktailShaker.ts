@@ -1,5 +1,5 @@
 import { EnterSortOptions, LetterState } from "@types";
-import { createEnterStepWaiter, DEFAULT_ENTER_RATE, sleep } from "@timing";
+import { createStepWaiter, DEFAULT_STEP_RATE, sleep } from "@timing";
 import { shuffle } from "../shuffle";
 
 type CocktailShakerSortOptions = Omit<EnterSortOptions, "algorithm">;
@@ -16,7 +16,7 @@ export const cocktailShakerSort = async (
 ) => {
   const { startDelay = 0, direction = "ltr" } = options || {};
   const n = text.length;
-  const scheduler = createEnterStepWaiter(options, n * n, DEFAULT_ENTER_RATE);
+  const scheduler = createStepWaiter(options, n * n, DEFAULT_STEP_RATE);
 
   await sleep(startDelay);
 

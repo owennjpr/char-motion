@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { resolveEnterStepDelays, resolveEnterStepTiming } from "./schedule";
+import { resolveStepDelays, resolveStepTiming } from "./schedule";
 import { resolveRandomizedBudget } from "./resolveTiming";
 import { assertClose } from "./testUtils";
 
@@ -60,7 +60,7 @@ describe("legacy regression: typed sweep", () => {
 
     it(label, async () => {
       const stepCount = textLength;
-      const delays = resolveEnterStepDelays(stepCount, { rate }, 40);
+      const delays = resolveStepDelays(stepCount, { rate }, 40);
 
       expectConstantDelays(delays, rate);
 
@@ -81,7 +81,7 @@ describe("legacy regression: number sweep", () => {
     const rate = 40;
     const stepCount = textLength * cyclesPerDigit;
 
-    const delays = resolveEnterStepDelays(stepCount, { rate }, 40);
+    const delays = resolveStepDelays(stepCount, { rate }, 40);
 
     expectConstantDelays(delays, rate);
   });
@@ -98,7 +98,7 @@ describe("legacy regression: randomized", () => {
 describe("legacy regression: sort (rate mode)", () => {
   it("rate mode uses fixed per-step delay", () => {
     const rate = 40;
-    const timing = resolveEnterStepTiming(1, { rate });
+    const timing = resolveStepTiming(1, { rate });
     assert.strictEqual(timing.kind, "rate");
     if (timing.kind === "rate") assert.strictEqual(timing.ms, rate);
   });
@@ -106,8 +106,8 @@ describe("legacy regression: sort (rate mode)", () => {
 
 describe("timing modes", () => {
   it("duration mode ignores rate and applies easing", () => {
-    const rateDelays = resolveEnterStepDelays(10, { rate: 40, easing: "easeOut" }, 40);
-    const durationDelays = resolveEnterStepDelays(
+    const rateDelays = resolveStepDelays(10, { rate: 40, easing: "easeOut" }, 40);
+    const durationDelays = resolveStepDelays(
       10,
       { duration: 300, rate: 40, easing: "easeOut" },
       40,
@@ -118,12 +118,12 @@ describe("timing modes", () => {
   });
 
   it("rate mode avoids allocating a delay array", () => {
-    const timing = resolveEnterStepTiming(500, { rate: 40 });
+    const timing = resolveStepTiming(500, { rate: 40 });
     assert.deepStrictEqual(timing, { kind: "rate", ms: 40 });
   });
 
   it("duration wins over rate when both are set", () => {
-    const delays = resolveEnterStepDelays(10, { duration: 300, rate: 40 }, 40);
+    const delays = resolveStepDelays(10, { duration: 300, rate: 40 }, 40);
 
     assertClose(
       delays.reduce((a, b) => a + b, 0),

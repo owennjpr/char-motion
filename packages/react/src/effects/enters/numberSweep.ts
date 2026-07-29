@@ -1,5 +1,5 @@
 import { EnterNumberSweepOptions, LetterState, NumberSweepFn } from "@types";
-import { resolveEnterStepTiming, sleep, stepDelay } from "@timing";
+import { resolveStepTiming, sleep, stepDelay } from "@timing";
 
 export const numberSweep: NumberSweepFn = async (
   text: LetterState[],
@@ -14,7 +14,7 @@ export const numberSweep: NumberSweepFn = async (
   } = options || {};
 
   const stepCount = text.length * cyclesPerDigit;
-  const timing = resolveEnterStepTiming(stepCount, options);
+  const timing = resolveStepTiming(stepCount, options);
 
   await sleep(startDelay);
 
