@@ -2,7 +2,7 @@ import type { Easing } from "./easings";
 import { resolveInverseEasing } from "./easings";
 import { sleep } from "./sleep";
 
-export const DEFAULT_ENTER_RATE = 40;
+export const DEFAULT_STEP_RATE = 40;
 
 function easedIntervalDelay(
   step: number,
@@ -30,21 +30,21 @@ export function computeStepDelays(
   return delays;
 }
 
-export type EnterStepTimingOptions = {
+export type StepTimingOptions = {
   duration?: number;
   rate?: number;
   easing?: Easing;
 };
 
-export type EnterStepTiming =
+export type StepTiming =
   | { kind: "rate"; ms: number }
   | { kind: "duration"; delays: number[] };
 
-export function resolveEnterStepTiming(
+export function resolveStepTiming(
   stepCount: number,
-  options: EnterStepTimingOptions | undefined,
-  defaultRate = DEFAULT_ENTER_RATE,
-): EnterStepTiming {
+  options: StepTimingOptions | undefined,
+  defaultRate = DEFAULT_STEP_RATE,
+): StepTiming {
   const duration = options?.duration;
   if (duration !== undefined) {
     return {
@@ -55,30 +55,30 @@ export function resolveEnterStepTiming(
   return { kind: "rate", ms: options?.rate ?? defaultRate };
 }
 
-export function stepDelay(timing: EnterStepTiming, index: number): number {
+export function stepDelay(timing: StepTiming, index: number): number {
   return timing.kind === "rate" ? timing.ms : timing.delays[index];
 }
 
-/** @deprecated Prefer `resolveEnterStepTiming` — expands rate mode to a full array. */
-export function resolveEnterStepDelays(
+/** Expands rate mode to a full delay array. */
+export function resolveStepDelays(
   stepCount: number,
-  options: EnterStepTimingOptions | undefined,
-  defaultRate = DEFAULT_ENTER_RATE,
+  options: StepTimingOptions | undefined,
+  defaultRate = DEFAULT_STEP_RATE,
 ): number[] {
-  const timing = resolveEnterStepTiming(stepCount, options, defaultRate);
+  const timing = resolveStepTiming(stepCount, options, defaultRate);
   if (timing.kind === "duration") return timing.delays;
   return Array.from({ length: stepCount }, () => timing.ms);
 }
 
-export type EnterStepWaiter = {
+export type StepWaiter = {
   wait: () => Promise<void>;
 };
 
-export function createEnterStepWaiter(
-  options: EnterStepTimingOptions | undefined,
+export function createStepWaiter(
+  options: StepTimingOptions | undefined,
   estimateSteps: number,
-  defaultRate = DEFAULT_ENTER_RATE,
-): EnterStepWaiter {
+  defaultRate = DEFAULT_STEP_RATE,
+): StepWaiter {
   const duration = options?.duration;
   if (duration !== undefined) {
     return createAdaptiveScheduler({

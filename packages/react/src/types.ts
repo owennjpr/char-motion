@@ -4,18 +4,10 @@ import type { Easing, EasingName } from "./timing/easings";
 export type { Easing, EasingName };
 
 export type EnterTimingOptions = {
-  /**
-   * Total ms for the animated body (excludes `startDelay`).
-   * When set on step-based enters, timing uses `duration` + optional `easing` and `rate` is ignored.
-   * On randomized, sets the wall-clock budget (with optional `easing`).
-   */
   duration?: number;
-  /** Progress curve when using `duration`; ignored when timing via `rate`. Default: `"linear"`. */
   easing?: Easing;
-  /** Ms to wait before the animated body; not included in `duration`. */
   startDelay?: number;
-  /** Ms per step when `duration` is not set (typed sweep, number sweep, sort). */
-  rate?: number;
+  rate?: number; // fallback when duration is not set
   /**
    * @deprecated Use `duration`.
    */
@@ -72,9 +64,15 @@ export type HoverCaseOptions = {
 };
 
 // Morph Option Types
-export type MorphRetypeOptions = {
-  deleteRate?: number;
-  typeRate?: number;
+export type MorphTimingOptions = {
+  duration?: number;
+  easing?: Easing;
+  startDelay?: number;
+};
+
+export type MorphRetypeOptions = MorphTimingOptions & {
+  deleteRate?: number; // fallback when duration is not set
+  typeRate?: number; // fallback when duration is not set
   cursor?: string;
   keepCommonStart?: boolean;
 };

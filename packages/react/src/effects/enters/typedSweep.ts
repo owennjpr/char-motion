@@ -1,5 +1,5 @@
 import { EnterTypedSweepOptions, LetterState, TypedSweepFn } from "@types";
-import { resolveEnterStepTiming, sleep, stepDelay } from "@timing";
+import { resolveStepTiming, sleep, stepDelay } from "@timing";
 
 export const typedSweep: TypedSweepFn = async (
   text: LetterState[],
@@ -8,7 +8,7 @@ export const typedSweep: TypedSweepFn = async (
 ) => {
   const { cursor = "_", startDelay = 0, direction = "ltr" } = options || {};
 
-  const timing = resolveEnterStepTiming(text.length, options);
+  const timing = resolveStepTiming(text.length, options);
 
   await sleep(startDelay);
 

@@ -4,8 +4,9 @@ import {
   computeStepDelays,
   createAdaptiveScheduler,
   previewAdaptiveDelay,
-  resolveEnterStepDelays,
-  resolveEnterStepTiming,
+  resolveStepDelays,
+  resolveStepTiming,
+  stepDelay,
 } from "./schedule";
 import { assertClose } from "./testUtils";
 
@@ -62,25 +63,25 @@ describe("computeStepDelays", () => {
   });
 });
 
-describe("resolveEnterStepDelays", () => {
+describe("resolveStepDelays", () => {
   it("uses constant rate when duration is not set", () => {
-    const delays = resolveEnterStepDelays(6, { rate: 50 }, 40);
+    const delays = resolveStepDelays(6, { rate: 50 }, 40);
     for (const d of delays) assertClose(d, 50);
   });
 
   it("ignores easing when duration is not set", () => {
-    const withEasing = resolveEnterStepDelays(8, { rate: 40, easing: "easeIn" }, 40);
-    const withoutEasing = resolveEnterStepDelays(8, { rate: 40 }, 40);
+    const withEasing = resolveStepDelays(8, { rate: 40, easing: "easeIn" }, 40);
+    const withoutEasing = resolveStepDelays(8, { rate: 40 }, 40);
     assert.deepStrictEqual(withEasing, withoutEasing);
   });
 
   it("uses duration and easing when duration is set", () => {
-    const delays = resolveEnterStepDelays(20, { duration: 2000, easing: "easeOut" }, 40);
+    const delays = resolveStepDelays(20, { duration: 2000, easing: "easeOut" }, 40);
     assert.ok(delays[0] < delays[19]);
   });
 
   it("rate mode returns a compact timing descriptor", () => {
-    assert.deepStrictEqual(resolveEnterStepTiming(8, { rate: 50 }), {
+    assert.deepStrictEqual(resolveStepTiming(8, { rate: 50 }), {
       kind: "rate",
       ms: 50,
     });
@@ -146,5 +147,45 @@ describe("createAdaptiveScheduler", () => {
       assert.ok(elapsed > prev);
       prev = elapsed;
     }
+  });
+});
+
+describe("morph retype step timing", () => {
+  it("uses one duration curve across delete and type steps", () => {
+    const deleteSteps = 4;
+    const typeSteps = 6;
+    const totalSteps = deleteSteps + typeSteps;
+    const duration = 1000;
+
+    const timing = resolveStepTiming(totalSteps, {
+      duration,
+      easing: "easeOut",
+    });
+
+    assert.strictEqual(timing.kind, "duration");
+    if (timing.kind !== "duration") return;
+
+    const delays = timing.delays;
+    assert.strictEqual(delays.length, totalSteps);
+    assertClose(sum(delays), duration);
+
+    let step = 0;
+    const deleteDelays = Array.from({ length: deleteSteps }, () =>
+      stepDelay(timing, step++),
+    );
+    const typeDelays = Array.from({ length: typeSteps }, () =>
+      stepDelay(timing, step++),
+    );
+
+    assert.ok(deleteDelays[0] < deleteDelays[deleteSteps - 1]);
+    assert.ok(typeDelays[0] < typeDelays[typeSteps - 1]);
+  });
+
+  it("uses separate rates when duration is not set", () => {
+    const deleteTiming = resolveStepTiming(3, { rate: 50 });
+    const typeTiming = resolveStepTiming(2, { rate: 30 });
+
+    assertClose(stepDelay(deleteTiming, 0), 50);
+    assertClose(stepDelay(typeTiming, 0), 30);
   });
 });

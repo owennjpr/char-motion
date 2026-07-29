@@ -461,15 +461,20 @@ function Gallery() {
             </div>
           }
           options={[
+            enterDurationOption,
+            enterEasingOption,
+            enterStartDelayOption,
             {
               name: "deleteRate",
-              description: "time in ms to delete each old character",
+              description:
+                "ms per delete step when duration is not set; ignored if duration is set",
               type: "number",
               defaultValue: "40",
             },
             {
               name: "typeRate",
-              description: "time in ms to type each new character",
+              description:
+                "ms per type step when duration is not set; ignored if duration is set",
               type: "number",
               defaultValue: "40",
             },

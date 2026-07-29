@@ -1,5 +1,5 @@
 import { EnterSortOptions, LetterState } from "@types";
-import { createEnterStepWaiter, DEFAULT_ENTER_RATE, sleep } from "@timing";
+import { createStepWaiter, DEFAULT_STEP_RATE, sleep } from "@timing";
 import { shuffle } from "../shuffle";
 
 type QuickSortOptions = Omit<EnterSortOptions, "algorithm">;
@@ -16,10 +16,10 @@ export const quickSortSort = async (
 ) => {
   const { startDelay = 0, direction = "ltr" } = options || {};
   const n = text.length;
-  const scheduler = createEnterStepWaiter(
+  const scheduler = createStepWaiter(
     options,
     n * Math.max(1, Math.ceil(Math.log2(Math.max(n, 2)))),
-    DEFAULT_ENTER_RATE,
+    DEFAULT_STEP_RATE,
   );
 
   await sleep(startDelay);

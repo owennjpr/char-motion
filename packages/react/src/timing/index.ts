@@ -5,11 +5,11 @@ export {
   usesDurationTiming,
 } from "./resolveTiming";
 export {
-  createEnterStepWaiter,
-  DEFAULT_ENTER_RATE,
-  resolveEnterStepTiming,
+  createStepWaiter,
+  DEFAULT_STEP_RATE,
+  resolveStepTiming,
   stepDelay,
-  type EnterStepTiming,
-  type EnterStepTimingOptions,
+  type StepTiming,
+  type StepTimingOptions,
 } from "./schedule";
 export { sleep } from "./sleep";

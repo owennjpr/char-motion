@@ -4,6 +4,7 @@ import {
   MorphRetypeOptions,
   RetypeFn,
 } from "@types";
+import { resolveStepTiming, sleep, stepDelay } from "@timing";
 
 const getCommonPrefixLen = (s1: string, s2: string) => {
   const minL = Math.min(s1.length, s2.length);
@@ -27,6 +28,7 @@ export const retype: RetypeFn = async (
     typeRate = 40,
     cursor = "_",
     keepCommonStart = true,
+    startDelay = 0,
   } = options || {};
 
   if (!prevText) return;
@@ -40,10 +42,32 @@ export const retype: RetypeFn = async (
     ? getCommonPrefixLen(targetString, prevTargetString)
     : 0;
 
+  const deleteStepCount = prevText.length - commonPrefix;
+  const typeStepCount = text.length - commonPrefix;
+  const totalSteps = deleteStepCount + typeStepCount;
+  const usesDuration = options?.duration !== undefined;
+
+  const timing = usesDuration
+    ? resolveStepTiming(totalSteps, {
+        duration: options?.duration,
+        easing: options?.easing,
+      })
+    : undefined;
+  const deleteTiming = !usesDuration
+    ? resolveStepTiming(deleteStepCount, { rate: deleteRate })
+    : undefined;
+  const typeTiming = !usesDuration
+    ? resolveStepTiming(typeStepCount, { rate: typeRate })
+    : undefined;
+
+  await sleep(startDelay);
+
   // delete
   const toDelete = prevText.map((l) => ({ ...l }));
   setText([...toDelete]);
 
+  let step = 0;
+  let deleteStep = 0;
   let deleteIndex = toDelete.length - 1;
   while (deleteIndex >= commonPrefix) {
     toDelete[deleteIndex] = {
@@ -51,7 +75,11 @@ export const retype: RetypeFn = async (
       char: cursor,
     };
     setText([...toDelete]);
-    await new Promise((r) => setTimeout(r, deleteRate));
+    await sleep(
+      usesDuration
+        ? stepDelay(timing!, step++)
+        : stepDelay(deleteTiming!, deleteStep++),
+    );
 
     toDelete[deleteIndex] = {
       ...toDelete[deleteIndex],
@@ -70,6 +98,7 @@ export const retype: RetypeFn = async (
 
   setText([...toType]);
 
+  let typeStep = 0;
   for (let i = commonPrefix; i < toType.length; i++) {
     if (i > 0) {
       toType[i - 1] = {
@@ -81,7 +110,11 @@ export const retype: RetypeFn = async (
     toType[i] = { ...toType[i], char: cursor };
     setText([...toType]);
 
-    await new Promise((r) => setTimeout(r, typeRate));
+    await sleep(
+      usesDuration
+        ? stepDelay(timing!, step++)
+        : stepDelay(typeTiming!, typeStep++),
+    );
   }
 
   // fix last character
